@@ -1,6 +1,6 @@
 import allure
 import requests
-from data import BASE_URL, ORDERS_URL
+from urls import BASE_URL, ORDERS_URL
 
 class OrderMethods:
     def __init__(self):

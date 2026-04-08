@@ -48,4 +48,4 @@ def create_order(order_payload):
     order_methods = OrderMethods()
     response = order_methods.create_order(order_payload)
     track = response.json()["track"]
-    yield track
+    return track 

@@ -1,6 +1,6 @@
 import requests
 import allure
-from data import BASE_URL, COURIER_URL
+from urls import BASE_URL, COURIER_URL
 
 class CourierMethods:
     def __init__(self):

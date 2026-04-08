@@ -1,7 +1,7 @@
 import allure
-import pytest
 from methods.couirier_methods import CourierMethods
 from helpers import generate_random_string
+from data import LOGIN_WRONG_CREDENTIALS, LOGIN_INSUFFICIENT_DATA
 
 class TestCourierLogin:
     courier_methods = CourierMethods()
@@ -30,7 +30,7 @@ class TestCourierLogin:
         
         response = self.courier_methods.login_courier(login_payload)
         
-        assert response.status_code == 404 and response.json()["message"] == "Учетная запись не найдена"
+        assert response.status_code == 404 and response.json()["message"] == LOGIN_WRONG_CREDENTIALS
 
     @allure.title('Авторизация под несуществующим пользователем')
     def test_login_nonexistent_courier(self):
@@ -41,7 +41,7 @@ class TestCourierLogin:
         
         response = self.courier_methods.login_courier(login_payload)
         
-        assert response.status_code == 404 and response.json()["message"] == "Учетная запись не найдена"
+        assert response.status_code == 404 and response.json()["message"] == LOGIN_WRONG_CREDENTIALS
 
 
     @allure.title('Авторизация с пустым паролем')
@@ -54,7 +54,7 @@ class TestCourierLogin:
         
         response = self.courier_methods.login_courier(login_payload)
         
-        assert response.status_code == 400 and response.json()["message"] == "Недостаточно данных для входа"
+        assert response.status_code == 400 and response.json()["message"] == LOGIN_INSUFFICIENT_DATA
 
     @allure.title('Авторизация без передачи логина')
     def test_login_courier_missing_login(self, create_and_delete_courier):
@@ -66,7 +66,7 @@ class TestCourierLogin:
         
         response = self.courier_methods.login_courier(login_payload)
         
-        assert response.status_code == 400 and response.json()["message"] == "Недостаточно данных для входа"
+        assert response.status_code == 400 and response.json()["message"] == LOGIN_INSUFFICIENT_DATA
 
     @allure.title('Авторизация с пустым логином')
     def test_login_courier_empty_login(self, create_and_delete_courier):
@@ -79,4 +79,4 @@ class TestCourierLogin:
         response = self.courier_methods.login_courier(login_payload)
         
         # Проверяем ошибку
-        assert response.status_code == 400 and response.json()["message"] == "Недостаточно данных для входа"
+        assert response.status_code == 400 and response.json()["message"] == LOGIN_INSUFFICIENT_DATA

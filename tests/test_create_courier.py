@@ -2,14 +2,15 @@ import allure
 import pytest
 from methods.couirier_methods import CourierMethods
 from helpers import  generate_random_string
+from data import COURIER_CREATE_DUPLICATE_ERROR, COURIER_CREATE_MISSING_FIELD_ERROR
 
 class TestCreateCourier:
     courier_methods = CourierMethods()
 
     @allure.title('Успешное создание курьера')
-    def test_create_courier_success(self, create_and_delete_courier):
+    def test_create_courier_success(self, courier_payload):
         
-        response, payload, _ = create_and_delete_courier
+        response = self.courier_methods.create_courier(courier_payload)
         
         assert response.status_code == 201 and response.json()["ok"] ==  True
 
@@ -21,7 +22,7 @@ class TestCreateCourier:
         
         response = self.courier_methods.create_courier(payload)
 
-        assert response.status_code == 409 and response.json()["message"] == "Этот логин уже используется. Попробуйте другой."
+        assert response.status_code == 409 and response.json()["message"] == COURIER_CREATE_DUPLICATE_ERROR
 
     @allure.title('Нельзя создать курьера с уже существующим логином')
     def test_create_courier_with_existing_login(self, create_and_delete_courier):
@@ -35,7 +36,7 @@ class TestCreateCourier:
         
         response = self.courier_methods.create_courier(duplicate_login_payload)
         
-        assert response.status_code == 409 and response.json()["message"] == "Этот логин уже используется. Попробуйте другой."
+        assert response.status_code == 409 and response.json()["message"] == COURIER_CREATE_DUPLICATE_ERROR
 
     
     @allure.title('Создание курьера без обязательного поля')
@@ -46,5 +47,5 @@ class TestCreateCourier:
         
         response = self.courier_methods.create_courier(test_payload)
         
-        assert response.status_code == 400 and response.json()["message"] == "Недостаточно данных для создания учетной записи"
+        assert response.status_code == 400 and response.json()["message"] == COURIER_CREATE_MISSING_FIELD_ERROR
         
